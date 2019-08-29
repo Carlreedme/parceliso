@@ -6,9 +6,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
     'hostname' => 'localhost', // Your database connection address (can be an IP or hostname)
-    'username' => '', // The username to login with
-    'password' => '', // The password to login with
-    'database' => '', // The name of the database
+    'username' => 'parceliso', // The username to login with
+    'password' => 'root', // The password to login with
+    'database' => 'parceliso', // The name of the database
 
     /*
   !!! Do not edit anything below without knowing what you're doing !!!
