@@ -69,7 +69,7 @@
                                 }
                                 ?>
                             </select>
-                            <p><i>Go to this page <a href="/admin/settings/language"><span class="label label-info">here</span></a> if you would like to add more language options.</i></p>
+                            <p><i>Go to this page <a href="<?php echo $settings['site_url'] ?>admin/settings/language"><span class="label label-info">here</span></a> if you would like to add more language options.</i></p>
                         </div>
                     <?php
                     endif;
@@ -83,6 +83,6 @@
     function langSelector()
     {
         var selectedLang = document.getElementById('langSelector').value;
-        window.location.href = "/admin/settings/mailtemplates?lang="+selectedLang;
+        window.location.href = "<?php echo $settings['site_url'] ?>admin/settings/mailtemplates?lang="+selectedLang;
     }
 </script>

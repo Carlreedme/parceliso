@@ -230,11 +230,15 @@ class Zip {
 			if(!$lib->open($this->new_file_path,ZIPARCHIVE::CREATE)) throw new Exception('PHP-ZIP: Permission Denied or zlib can\'t be found');
 			
 			$count_before = $lib->numFiles;
-			
+
+			$i = 0;
+
 			// add each file
 			foreach ($this->org_files as $index => $org_file_path) {
 				// add the file to the archive
 				$lib->addFile($org_file_path,$this->file_names[$index]);
+				$lib->setCompressionIndex($i, ZipArchive::CM_STORE);
+				$i++;
 			}
 			
 			$count_after = $lib->numFiles;

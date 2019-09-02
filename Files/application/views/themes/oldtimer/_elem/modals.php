@@ -21,7 +21,7 @@
     </form>
 </div>
 
-<div id="modalTerms" class="modal fade" role="dialog">
+<div id="modalTerms" class="modal fade terms_tab_body" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -37,7 +37,7 @@
     </div>
 </div>
 
-<div id="modalAbout" class="modal fade" role="dialog">
+<div id="modalAbout" class="modal fade about_tab_body" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<div id="modalLang" class="modal fade" role="dialog">
+<div id="modalLang" class="modal fade language_settings_tab_body" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -76,13 +76,43 @@
     </div>
 </div>
 
+<div id="modalContact" class="modal fade contact_body" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="min-height: 50px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="contact-form" style="position: relative;height: 450px;">
+                    <p style="padding-top: 15px;"><?php echo lang('email'); ?>:</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control input-sm" name="contact_email" id="contact_email" placeholder="<?php echo lang('contact_email_description'); ?>">
+                    </div>
+                    <p style="padding-top: 15px;"><?php echo lang('subject'); ?>:</p>
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm" name="contact_subject" id="contact_subject" placeholder="<?php echo lang('contact_subject_description'); ?>">
+                    </div>
+                    <p style="padding-top: 15px;"><?php echo lang('message'); ?>:</p>
+                    <div class="input-group">
+                        <textarea class="form-control input-sm" name="contact_message" placeholder="<?php echo lang('contact_message_description'); ?>"></textarea>
+                    </div>
+                    <br>
+                    <div class="g-recaptcha" data-sitekey="<?php echo $settings['recaptcha_key']; ?>"></div>
+                    <button class="btn btn-default"><?php echo lang('send') ?></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 
 if(is_array($custom_tabs) && !empty($custom_tabs)) {
     foreach ($custom_tabs AS $key => $tab) {
         if($tab['type'] == 'inline')
         {
-            echo '<div id="custom_' . $key . '" class="modal fade" role="dialog">
+            echo '<div id="custom_' . $key . '" class="modal fade custom_' . $key . '_body" role="dialog">
                           <div class="modal-dialog">
                             <!-- Modal content-->
                             <div class="modal-content" style="min-height: 390px;">

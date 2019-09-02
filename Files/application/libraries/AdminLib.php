@@ -65,6 +65,7 @@ class AdminLib
 
     /**
      * Save entered settings
+     *
      * @param $page
      * @param $data
      */
@@ -75,6 +76,7 @@ class AdminLib
             case 'general':
             case 'termsabout':
             case 'advertising':
+            case 'contact':
                 $this->CI->load->model('settings');
                 $this->CI->settings->save($data);
             break;
@@ -312,34 +314,39 @@ class AdminLib
                 // Remove the downloaded zip file
                 unlink($update_file);
 
-                // Check if update provided any SQL file to run
-                if (file_exists(FCPATH . 'update.sql'))
-                {
-                    $sql = file_get_contents(FCPATH . 'update.sql');
-
-                    $query_array = explode(";", $sql);
-                    foreach ($query_array as $query)
-                    {
-                        if ( ! empty($query))
-                        {
-                            $query = utf8_encode($query);
-                            $this->CI->db->query($query);
-                        }
-                    }
-
-                    unlink(FCPATH . 'update.sql');
-                }
-
-                // Check if update library exists
-                if(file_exists(APPPATH . 'libraries/UpdateLib.php')) {
-                    $this->CI->load->library('UpdateLib');
-                    $this->CI->updatelib->run();
-                }
+                // Run the update files (If there are any)
+                $this->runUpdateFiles();
 
                 return TRUE;
             }
         }
         return false;
+    }
+
+    public function runUpdateFiles() {
+        // Check if update provided any SQL file to run
+        if (file_exists(FCPATH . 'update.sql'))
+        {
+            $sql = file_get_contents(FCPATH . 'update.sql');
+
+            $query_array = explode(";", $sql);
+            foreach ($query_array as $query)
+            {
+                if ( ! empty($query))
+                {
+                    $query = utf8_encode($query);
+                    $this->CI->db->query($query);
+                }
+            }
+
+            unlink(FCPATH . 'update.sql');
+        }
+
+        // Check if update library exists
+        if(file_exists(APPPATH . 'libraries/UpdateLib.php')) {
+            $this->CI->load->library('UpdateLib');
+            $this->CI->updatelib->run();
+        }
     }
 
     /**

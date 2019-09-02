@@ -16,6 +16,11 @@ body {
     -webkit-backface-visibility: hidden;
 }
 
+.alert-success a {
+    color: white;
+    text-decoration: underline;
+}
+
 .background {
     position: fixed !important;
     left: 0;
@@ -460,4 +465,26 @@ a.settingsNav:hover {
 
 @media only screen and (max-width: 750px) {
 
+}
+
+
+.settingsBodyContent::-webkit-scrollbar {
+    display: none;
+}
+
+.contact-form {
+    font-size: 14px;
+}
+
+.contact-form input, .contact-form .input-group, .contact-form textarea {
+    width: 100% !important;
+}
+
+.contact-form .g-recaptcha {
+    float: left;
+}
+
+.contact-form .btn {
+    float: right;
+    margin-top: 30px;
 }

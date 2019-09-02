@@ -117,5 +117,19 @@ $lang = array(
     'user_login'                => "Inicio de sesión",
 
     // Added in update 2.0.3
-    'logout'                    => 'Logout'
+    'logout'                    => "Logout",
+
+    // Added in update 2.1.4
+    'contact'                   => "Contact",
+    'subject'                   => "Subject",
+    'send'                      => "Send",
+    'message_sent'              => "Your message has been sent !",
+
+    // Added in update 2.1.5
+    'contact_email_description'   => 'Your email address',
+    'contact_subject_description' => 'Your subject',
+    'contact_message_description' => 'Your message',
+  
+    // Added in update 2.1.6
+    'invalid_email'               => "The entered email isn't a valid email address"
 );

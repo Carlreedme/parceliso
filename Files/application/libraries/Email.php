@@ -1846,12 +1846,12 @@ class Email {
 	 */
 	protected function _validate_email_for_shell(&$email)
 	{
-		if (function_exists('idn_to_ascii') && $atpos = strpos($email, '@'))
-		{
-			$email = self::substr($email, 0, ++$atpos).idn_to_ascii(self::substr($email, $atpos));
-		}
+        if (function_exists('idn_to_ascii') && defined('INTL_IDNA_VARIANT_UTS46') && $atpos = strpos($email, '@'))
+        {
+            $email = self::substr($email, 0, ++$atpos).idn_to_ascii(self::substr($email, $atpos), 0, INTL_IDNA_VARIANT_UTS46);
+        }
 
-		return (filter_var($email, FILTER_VALIDATE_EMAIL) === $email && preg_match('#\A[a-z0-9._+-]+@[a-z0-9.-]{1,253}\z#i', $email));
+        return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
 
 	// --------------------------------------------------------------------
@@ -2711,12 +2711,27 @@ class Email {
 
         $upload = $this->CI->uploads->getByUploadID($upload_id);
         if($upload !== false) {
+            // If it's a GB
+            if($upload['size'] > 1073741824) {
+                $file_size = round($upload['size'] / 1073741824, 2) . ' GB';
+            }
+            // If it's a MB
+            elseif($upload['size'] > 1048576)
+            {
+                $file_size = round($upload['size'] / 1048576, 2) . ' MB';
+            }
+            // If it's KB
+            else
+            {
+                $file_size = round($upload['size'] / 1024, 2) . ' KB';
+            }
+
             switch($template) {
                 case 'receiver':
                     $data = array(
                         'email_to'      => $extra_data['email'],
                         'email_from'    => $upload['email_from'],
-                        'size'          => round($upload['size'] / 1048576, 2),
+                        'size'          => $file_size,
                         'site_name'     => $this->CI->config->item('site_name'),
 
                         'upload_id'     => $upload_id,
@@ -2734,7 +2749,7 @@ class Email {
                 case 'downloaded':
                     $data = array(
                         'email_from'    => $upload['email_from'],
-                        'size'          => round($upload['size'] / 1048576, 2),
+                        'size'          => $file_size,
                         'site_name'     => $this->CI->config->item('site_name'),
 
                         'upload_id'     => $upload_id,

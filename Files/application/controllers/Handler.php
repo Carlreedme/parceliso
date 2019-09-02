@@ -37,7 +37,9 @@ class Handler extends CI_Controller {
             'remaining'         => $this->lang->line('msg_remaining'),
             'uploaded_of'       => $this->lang->line('uploaded_of'),
             'are_sure'          => $this->lang->line('are_you_sure'),
-            'too_large'         => $this->lang->line('file_too_large')
+            'too_large'         => $this->lang->line('file_too_large'),
+            'message_sent'      => $this->lang->line('message_sent'),
+            'invalid_email'     => $this->lang->line('invalid_email')
         );
 
         echo json_encode($translation);
@@ -88,7 +90,7 @@ class Handler extends CI_Controller {
 
         $this->load->library('UploadLib');
 
-        // Post date
+        // Post data
         $post = $this->input->post(NULL, TRUE);
 
         // Check if there's any id provided
@@ -208,5 +210,27 @@ class Handler extends CI_Controller {
                 }
             }
         }
+    }
+
+    public function contact() {
+        $this->load->library('email');
+        $this->load->helper('recaptcha');
+
+        // Post data
+        $post = $this->input->post(NULL, TRUE);
+
+        if(!empty($post['contact_email']) && !empty($post['contact_subject']) && !empty($post['contact_message'])) {
+            if(empty($this->config->item('recaptcha_secret')) || validate_recaptcha($post['g-recaptcha-response'], $this->config->item('recaptcha_secret'))) {
+                $this->email->reply_to($post['contact_email']);
+                $this->email->sendEmailClean(nl2br(htmlspecialchars($post['contact_message'])), 'Contact: ' . $post['contact_subject'], array($this->config->item('contact_email')));
+
+                echo json_encode(array('result' => 'success'));
+                exit;
+            }
+            echo json_encode(array('result' => 'recaptcha'));
+            exit;
+        }
+        echo json_encode(array('result' => 'fields'));
+        exit;
     }
 }

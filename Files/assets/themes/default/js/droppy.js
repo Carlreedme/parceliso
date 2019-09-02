@@ -68,6 +68,49 @@ General = {
         window.onbeforeunload = function() {
             return Lang.i.are_sure;
         };
+    },
+    contactForm: function() {
+        $(document.body).on('click', '.contact-form button', function(ev) {
+            ev.preventDefault();
+
+            var form = $(this).parents('form');
+
+            if(General.validateEmail($(form).find('input[name="contact_email"]').val())) {
+                $.ajax({
+                    url: "handler/contact",
+                    type: 'post',
+                    dataType: 'json',
+                    data: $(form).serialize(),
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+
+                        if (data.result == 'success') {
+                            $('.contact-form').find('.alert').remove();
+                            $('.contact-form').prepend('<div class="alert alert-success" role="alert">' + Lang.i.message_sent + '</div>');
+                            $('.contact-form input, .contact-form textarea').val('');
+                            grecaptcha.reset();
+
+                            setTimeout(function() {
+                                $('.contact-form').find('.alert').remove();
+                            }, 3000);
+                        }
+                        else if (data.result == 'fields' || data.result == 'recaptcha') {
+                            alert(Lang.i.fill_fields);
+                        }
+                        else {
+                            alert('Error sending message !');
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    }
+                });
+            } else {
+                alert(Lang.i.invalid_email);
+            }
+        });
     }
 };
 
@@ -88,10 +131,10 @@ Lang = {
 Pager = {
     settingsOpen: false,
     openInlinePage: function(click_id) {
-        if(mobileVersion == 'yes') {
+        if (typeof ismobile !== 'undefined' && ismobile === true) {
             var click = click_id + '_body';
             $(document).ready(function() {
-                $('#' + click).modal('show');
+                $('.' + click).modal('show');
             });
         } else {
             var body = $(".settingsBodyContent");
@@ -109,11 +152,7 @@ Pager = {
     },
     openSettings: function() {
         if(Pager.settingsOpen === false) {
-            if (typeof ismobile !== 'undefined' && ismobile === true) {
-                $('#modalSettings').modal('show');
-                $('#uploadSettings').hide();
-            }
-            else {
+            if (typeof ismobile == 'undefined' || ismobile === false) {
                 $('#uploadSettings').show();
             }
             Pager.settingsOpen = true;
@@ -255,6 +294,9 @@ Form = {
         $(document.body).on('click', '#submitdownload', function() {
             $('#downloadForm').hide();
             $('#downloadSuccess').show();
+            setTimeout(function() {
+                $('#downloadSuccess .btn').removeAttr('disabled');
+            }, 1500);
         });
 
         $(document.body).on('click', '#cancelUpload', function() {
@@ -364,7 +406,7 @@ Uploader = {
             dataType: 'json',
             cache: false,
             autoUpload: false,
-            maxChunkSize: 1000000, // 1MB
+            maxChunkSize: (maxChunkSize * 1000000), // 1MB
             maxFileSize: maxSizeBytes,
             maxNumberOfFiles: maxFiles,
             acceptFileTypes: '@',
@@ -604,8 +646,6 @@ Uploader = {
 
         // Get some info about the upload
         var percentComplete = progress;
-        var totalMb = (Math.round(uploadTotal * 100 / (1000 * 1000)) / 100).toFixed(1);
-        var uploadedMb = (Math.round(uploadTotalSent * 100 / (1000 * 1000)) / 100).toFixed(1);
 
         // Append progress percentage.
         var loaded = uploadTotalSent;
@@ -616,13 +656,13 @@ Uploader = {
 
         var bytes_per_second =  (seconds_elapsed) ? (loaded / seconds_elapsed) : 0 ;
         var Mbytes_per_second = bytes_per_second / 1000000;
+        var Mbits_per_seconds = bytes_per_second / 100000;
         var remaining_bytes =   total - loaded;
         var seconds_remaining = (seconds_elapsed) ? (remaining_bytes / bytes_per_second) : 'calculating' ;
 
         var time_sum = 0;
         var progress_time = 0;
 
-        //Outputs estimated remaining upload time
         if(seconds_remaining > 3600) {
             time_sum = seconds_remaining / 3600;
             progress_time = '&plusmn; '+Math.round(time_sum).toFixed(1)+' '+Lang.i.hours+' '+Lang.i.remaining;
@@ -636,24 +676,45 @@ Uploader = {
             progress_time = '&plusmn; '+Math.round(seconds_remaining)+' '+Lang.i.seconds+' '+Lang.i.remaining;
         }
 
-        //Settings the progress styles and inserting data
         $('#uploadDiv').hide();
         if($('#uploadSettings').length) {
             $('#uploadSettings').hide();
         }
         $('#uploadingDiv').show();
         $('#uploadingDivSocial').show();
-        if(seconds_elapsed < 10) {
-            $('#progressMb').html('<p align="center"><i>' + uploadedMb + ' MB '+Lang.i.uploaded_of+' ' + totalMb + ' MB </i></p><p>'+progress_time+'</p>');
+
+        var totalMB = (Math.round(uploadTotal * 100 / (1000 * 1000)) / 100).toFixed(1);
+        var uploadedMB = (Math.round(uploadTotalSent * 100 / (1000 * 1000)) / 100).toFixed(1);
+        var totalGB = (Math.round((uploadTotal * 100 / (1000 * 1000)) / 100) / 1024).toFixed(1);
+        var uploadedGB = (Math.round((uploadTotalSent * 100 / (1000 * 1000)) / 100) / 1024).toFixed(1);
+
+
+        if(totalMB > 1000) {
+            var totalProgress = totalGB + ' GB';
         }
         else
         {
-            $('#progressMb').html('<p align="center"><i>' + uploadedMb + ' MB '+Lang.i.uploaded_of+' ' + totalMb + ' MB ('+(Mbytes_per_second).toFixed(1)+' MB/s)</i></p><p>'+progress_time+'</p>');
+            var totalProgress = totalMB + ' MB';
         }
+
+        if(uploadedMB > 1000) {
+            var uploadedProgress = uploadedGB + ' GB';
+        }
+        else
+        {
+            var uploadedProgress = uploadedMB + ' MB';
+        }
+
+        if(seconds_elapsed < 5) {
+            $('#progressMb').html('<p align="center"><i>' + uploadedProgress + ' '+Lang.i.uploaded_of+' ' + totalProgress + ' </i></p><p>'+progress_time+'</p>');
+        }
+        else
+        {
+            $('#progressMb').html('<p align="center"><i>' + uploadedProgress + ' '+Lang.i.uploaded_of+' ' + totalProgress + ' ('+(Mbits_per_seconds).toFixed(1)+' Mb/s)</i></p><p>'+progress_time+'</p>');
+        }
+
         $("#progresscircle").val(percentComplete.toString());
-        $('.progressCircle')
-            .val(percentComplete.toString())
-            .trigger('change');
+        $('.progressCircle').val(percentComplete.toString()).trigger('change');
     },
     uploadComplete: function(evt) {
         Uploader.uploadFinished();
@@ -709,6 +770,7 @@ $(document).ready(function() {
     Download.init();
     Lang.fetch();
     General.initExtraFunctions();
+    General.contactForm();
     Form.initFormActivity();
     Uploader.initProgressBar();
     Uploader.initUploader();

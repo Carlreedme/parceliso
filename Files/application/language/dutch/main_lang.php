@@ -116,5 +116,19 @@ $lang = array(
     'user_login'                => "Gebruikers login",
 
     // Added in update 2.0.3
-    'logout'                    => 'Logout'
+    'logout'                    => "Loguit",
+
+    // Added in update 2.1.4
+    'contact'                   => "Contact",
+    'subject'                   => "Onderwerp",
+    'send'                      => "Verstuur",
+    'message_sent'              => "Uw bericht is verzonden !",
+  
+    // Added in update 2.1.5
+    'contact_email_description'   => 'Uw email adres',
+    'contact_subject_description' => 'Uw onderwerp',
+    'contact_message_description' => 'Uw bericht',
+  
+    // Added in update 2.1.6
+    'invalid_email'               => "Het ingevoerde email adres is geen email adres"
 );

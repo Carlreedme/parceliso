@@ -1,8 +1,8 @@
 <div class="main" id="downloadDiv">
     <?php if(!$mobile): ?>
-    <img src="<?php echo $settings['logo_path']; ?>" class="logo" alt="Logo"><hr>
+        <img src="<?php echo $settings['logo_path']; ?>" class="logo" alt="Logo"><hr>
     <?php else: ?>
-    <br>
+        <br>
     <?php endif; ?>
 
     <?php if(isset($data) && is_array($data)): ?>
@@ -27,11 +27,11 @@
                         if($data['destruct'] == 'YES') :
                             ?>
                             <input type="submit" class="btn btn-default btn-block btn-sm" id="submitpass" value="<?php echo lang('download'); ?> & <?php echo lang('destruct'); ?>">
-                            <?php
+                        <?php
                         else :
                             ?>
                             <input type="submit" class="btn btn-default btn-block btn-sm" id="submitpass" value="<?php echo lang('download'); ?>">
-                            <?php
+                        <?php
                         endif;
                         ?>
                     </form>
@@ -100,7 +100,7 @@
                     <p><?php echo lang('download_started'); ?></p>
                 </div>
                 <div class="buttonSection" style="width: 70%;">
-                    <a class="btn btn-default btn-block btn-sm" href="<?php echo $settings['site_url']; ?>"><?php echo lang('ok'); ?></a>
+                    <a class="btn btn-default btn-block btn-sm" href="<?php echo $settings['site_url']; ?>" disabled="disabled"><?php echo lang('ok'); ?></a>
                 </div>
             </div>
         <?php elseif($data['status'] == 'processing'): ?>

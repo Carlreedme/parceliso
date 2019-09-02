@@ -4,8 +4,11 @@
     <!-- Meta tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="description" content="<?php echo $settings['site_desc']; ?>">
     <meta name="author" content="<?php echo $settings['site_name']; ?>">
+    <meta name="keywords" content="<?php echo $settings['site_keywords']; ?>"/>
+
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 
     <title><?php echo $settings['site_title']; ?></title>
@@ -13,7 +16,7 @@
     <base href="<?php echo $settings['site_url'] ?>">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="<?php echo $settings['favicon_path']; ?>"/>
+    <link rel="shortcut icon" type="image/png" href="<?php echo $settings['favicon_path']; ?>">
 
     <!-- Loading Bootstrap -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
@@ -96,6 +99,9 @@
                 <li><a href="#" data-toggle="modal" data-target="#modalLang"><?php echo lang('change_language'); ?></a></li>
                 <li><a href="#" data-toggle="modal" data-target="#modalTerms"><?php echo lang('terms_service'); ?></a></li>
                 <li><a href="#" data-toggle="modal" data-target="#modalAbout"><?php echo lang('about_us'); ?></a></li>
+                <?php if($settings['contact_enabled'] == 'true'): ?>
+                    <li><a href="#" data-toggle="modal" data-target="#modalContact"><?php echo lang('contact'); ?></a></li>
+                <?php endif; ?>
                 <?php
                 if(is_array($custom_tabs) && !empty($custom_tabs)) {
                     foreach ($custom_tabs AS $key => $tab) {

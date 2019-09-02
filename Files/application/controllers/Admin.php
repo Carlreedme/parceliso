@@ -95,9 +95,6 @@ class Admin extends CI_Controller {
         exit;
     }
 
-    /**
-     *
-     */
     public function uploads()
     {
         $this->load->library('UploadLib');
@@ -417,6 +414,20 @@ class Admin extends CI_Controller {
         $this->load->view('admin/system', $data);
 
         $this->load->view('admin/_elem/footer', $data);
+    }
+
+    public function update()
+    {
+        if(!$this->adminlib->isUpToDate())
+        {
+            $this->adminlib->runUpdateFiles();
+
+            echo 'Update finished';
+        }
+        else
+        {
+            echo 'System is already on the latest version';
+        }
     }
 
     public function logs()

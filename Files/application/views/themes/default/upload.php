@@ -75,6 +75,9 @@
                     <li><a id="language_settings_tab" class="settingsNav" onclick="Pager.openInlinePage(this.id);"><?php echo lang('change_language'); ?></a></li>
                     <li><a id="terms_tab" class="settingsNav" onclick="Pager.openInlinePage(this.id);"><?php echo lang('terms_service'); ?></a></li>
                     <li><a id="about_tab" class="settingsNav" onclick="Pager.openInlinePage(this.id);"><?php echo lang('about_us'); ?></a></li>
+                    <?php if($settings['contact_enabled'] == 'true'): ?>
+                        <li><a id="contact_tab" class="settingsNav" onclick="Pager.openInlinePage(this.id);"><?php echo lang('contact'); ?></a></li>
+                    <?php endif; ?>
                     <?php if($settings['lock_page'] == 'upload' || $settings['lock_page'] == 'both'): ?>
                         <li><a href="login/logout" class="settingsNav"><?php echo lang('logout'); ?></a></li>
                     <?php endif; ?>
@@ -118,11 +121,11 @@
                             <input type="hidden" name="destruct" id="destruct" value="<?php echo $settings['default_destruct'] ?>">
                         </div>
                         <?php
-                        if((isset($settings['pm_password_enabled']) && $settings['pm_pass_enabled'] == 'false') || $settings['password_enabled'] == 'false') :
+                        if((isset($settings['pm_pass_enabled']) && $settings['pm_pass_enabled'] == 'true') || $settings['password_enabled'] == 'true') :
                             ?>
                             <p style="padding-top: 15px;"><b><?php echo lang('protect_with_pass'); ?>: <i class="fa fa-question-circle" data-toggle="tooltip" title="<?php echo lang('password_text'); ?>"></i></b></p>
                             <div class="input-group">
-                                <input type="text" class="form-control input-sm" name="password" id="password" placeholder="<?php echo lang('not_available_pass'); ?>" readonly>
+                                <input type="password" class="form-control input-sm" name="password" id="password" placeholder="<?php echo lang('password'); ?>">
                             </div>
                             <i style="font-size: 12px;">(<?php echo lang('leave_empty_password'); ?>)</i>
                             <?php
@@ -130,7 +133,7 @@
                             ?>
                             <p style="padding-top: 15px;"><b><?php echo lang('protect_with_pass'); ?>: <i class="fa fa-question-circle" data-toggle="tooltip" title="<?php echo lang('password_text'); ?>"></i></b></p>
                             <div class="input-group">
-                                <input type="password" class="form-control input-sm" name="password" id="password" placeholder="<?php echo lang('password'); ?>">
+                                <input type="text" class="form-control input-sm" name="password" id="password" placeholder="<?php echo lang('not_available_pass'); ?>" readonly>
                             </div>
                             <i style="font-size: 12px;">(<?php echo lang('leave_empty_password'); ?>)</i>
                             <?php
@@ -144,6 +147,7 @@
                         endif;
                         ?>
                     </div>
+                    </form>
                     <div id="language_settings_tab_body" class="settingsBodyContent" style="display: none;">
                         <div style="padding-top: 120px; width: 90%; margin-left: auto; margin-right: auto;">
                             <p><?php echo lang('select_pref_lang') ?>:</p>
@@ -177,12 +181,35 @@
                         echo $settings['about_text'];
                         ?>
                     </div>
+                    <div id="contact_tab_body" class="settingsBodyContent" style="display: none; overflow: auto; height: 360px; width: 90%;">
+                        <form class="contact-form">
+                            <p style="padding-top: 15px;"><?php echo lang('email'); ?>:</p>
+                            <div class="input-group">
+                                <input type="email" class="form-control input-sm" name="contact_email" id="contact_email" placeholder="<?php echo lang('contact_email_description'); ?>">
+                            </div>
+                            <p style="padding-top: 15px;"><?php echo lang('subject'); ?>:</p>
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm" name="contact_subject" id="contact_subject" placeholder="<?php echo lang('contact_subject_description'); ?>">
+                            </div>
+                            <p style="padding-top: 15px;"><?php echo lang('message'); ?>:</p>
+                            <div class="input-group">
+                                <textarea class="form-control input-sm" name="contact_message" placeholder="<?php echo lang('contact_message_description'); ?>"></textarea>
+                            </div>
+                            <br>
+
+                            <?php if(!empty($settings['recaptcha_key'])): ?>
+                                <div class="g-recaptcha" data-sitekey="<?php echo $settings['recaptcha_key']; ?>"></div>
+                            <?php endif; ?>
+
+                            <button class="btn btn-default"><?php echo lang('send') ?></button>
+                        </form>
+                    </div>
                     <?php
                     if(is_array($custom_tabs) && !empty($custom_tabs)) {
                         foreach ($custom_tabs AS $key => $tab) {
                             if($tab['type'] == 'inline')
                             {
-                                echo '<div id="custom_' . $key . '_body" class="settingsBodyContent" style="display: none; overflow: auto; height: 360px; width: 90%;">';
+                                echo '<div id="custom_' . $key . '_body" class="settingsBodyContent" style="display: none; overflow: auto; height: 380px; width: 90%;">';
                                 require_once APPPATH . 'plugins/' . $tab['plugin'] . '/' . $tab['view'];
                                 echo '</div>';
                             }
@@ -264,7 +291,6 @@
             </div>
         </div>
     </div>
-</form>
 
 <!-- Progress and succes div -->
 <div class="main" id="uploadingDiv" style="display: none; text-align: center;">

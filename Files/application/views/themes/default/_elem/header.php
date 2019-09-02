@@ -4,16 +4,19 @@
         <!-- Meta tags -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
         <meta name="description" content="<?php echo $settings['site_desc']; ?>">
         <meta name="author" content="<?php echo $settings['site_name']; ?>">
+        <meta name="keywords" content="<?php echo $settings['site_keywords']; ?>"/>
+
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 
         <title><?php echo $settings['site_title']; ?></title>
 
-        <base href="<?php echo $settings['site_url'] ?>" />
+        <base href="<?php echo $settings['site_url'] ?>">
 
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/png" href="<?php echo $settings['favicon_path']; ?>"/>
+        <link href="<?php echo $settings['site_url'] . $settings['favicon_path']; ?>" rel="shortcut icon" type="image/png">
 
         <!-- Loading Bootstrap -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">

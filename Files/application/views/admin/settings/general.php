@@ -27,7 +27,13 @@
                                 <i>Description of your website</i>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Site keywords (Search engines)</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="site_keywords" class="form-control" value="<?php echo $settings['site_keywords']; ?>">
+                                <i>Site keywords, separate them with a comma (Like this: uploader, files, transfer)</i>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">Name on zip file</label>
                             <div class="col-sm-10">
@@ -190,6 +196,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Max chunk size <b>(MB)</b></label>
+                            <div class="col-sm-10">
+                                <input type="number" name="max_chunk_size" class="form-control" value="<?php echo $settings['max_chunk_size']; ?>">
+                                <i><b>Please do not change this if you don't know what you're doing</b>. Maximum chunk size in MB (Files are being uploaded in chunks (broken into pieces on the client computer and put back together on your web-server)), this value will define the maximum allowed size of each chunk. Suggested value is 1 MB.</i>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">Max file reports</label>
                             <div class="col-sm-10">
                                 <input type="number" name="max_file_reports" class="form-control" value="<?php echo $settings['max_file_reports']; ?>">
@@ -322,12 +335,30 @@
                                 <script>$('select[name="timezone"]').val("<?php echo $settings['timezone'] ?>");</script>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Google reCAPTCHA site key</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="recaptcha_key" class="form-control" value="<?php echo $settings['recaptcha_key'] ?>">
+                                <i>Required when the contact form is enabled</i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">Google reCAPTCHA site secret</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="recaptcha_secret" class="form-control" value="<?php echo $settings['recaptcha_secret'] ?>">
+                                <i>Required when the contact form is enabled</i>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="col-sm-2 col-sm-2 control-label">Analytics code</label>
                             <div class="col-sm-10">
                                 <textarea name="analytics" class="form-control" style="width: 100%; height: 200px;"><?php echo $settings['analytics'] ?></textarea>
                             </div>
                         </div>
+
                         <div style="float: right; padding-right: 5px;">
                             <button type="submit" class="btn btn-success" ><i class="fa fa-floppy-o"></i> Save</button>
                         </div>

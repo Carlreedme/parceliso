@@ -16,17 +16,25 @@ class UpdateLib
     public function __construct() {
         $this->CI =& get_instance();
 
-        $this->version = '2.1.3';
+        $this->version = '2.1.9';
     }
 
     public function run() {
         $current_version = $this->CI->config->item('version');
 
-        $update_dir = FCPATH . 'update';
+        $update_dir = APPPATH . 'update';
 
         if($current_version < '2.0.2')
         {
             $this->runSQL($update_dir . '/update_2.0.2.sql');
+        }
+        if($current_version < '2.1.4')
+        {
+            $this->runSQL($update_dir . '/update_2.1.4.sql');
+        }
+        if($current_version < '2.1.9')
+        {
+            $this->runSQL($update_dir . '/update_2.1.9.sql');
         }
 
         $this->updateVersion();

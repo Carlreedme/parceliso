@@ -19,6 +19,7 @@
                     <li><a href="settings/general">General settings</a></li>
                     <li><a href="settings/mail">Email settings</a></li>
                     <li><a href="settings/mailtemplates">Email templates</a></li>
+                    <li><a href="settings/contact">Contact form</a></li>
                     <li><a href="settings/social">Social settings</a></li>
                     <li><a href="settings/language">Language settings</a></li>
                     <li><a href="settings/termsabout">Terms &amp; About</a></li>

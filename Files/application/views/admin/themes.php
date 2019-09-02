@@ -33,7 +33,7 @@
                     </table>
                 </div>
                 <div class="form-panel" style="overflow:hidden ;">
-                    <h4 class="mb"><i class="fa fa-angle-right"></i> Install new theme</h4>
+                    <h4 class="mb"><i class="fa fa-angle-right"></i> Install a new theme</h4>
                     <form class="form-horizontal style-form" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <div>

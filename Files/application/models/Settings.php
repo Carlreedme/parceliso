@@ -11,6 +11,7 @@ class Settings extends CI_Model {
 
     /**
      * Will return all settings from the table
+     *
      * @param int $start
      * @param int $limit
      * @return array|bool
@@ -32,6 +33,7 @@ class Settings extends CI_Model {
 
     /**
      * Save new settings
+     *
      * @param $arr
      * @return bool
      */

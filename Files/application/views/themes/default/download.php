@@ -100,7 +100,7 @@
                     <p><?php echo lang('download_started'); ?></p>
                 </div>
                 <div class="buttonSection" style="width: 70%;">
-                    <a class="btn btn-default btn-block btn-sm" href="<?php echo $settings['site_url']; ?>"><?php echo lang('ok'); ?></a>
+                    <a class="btn btn-default btn-block btn-sm" href="<?php echo $settings['site_url']; ?>" disabled="disabled"><?php echo lang('ok'); ?></a>
                 </div>
             </div>
         <?php elseif($data['status'] == 'processing'): ?>

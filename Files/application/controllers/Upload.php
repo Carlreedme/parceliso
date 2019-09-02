@@ -19,6 +19,11 @@ class Upload extends CI_Controller
      */
     function index()
     {
+        if(!isset($_POST) || empty($_POST)) {
+            header('Location: '.$this->config->item('site_url'));
+            exit;
+        }
+
         // Get all settings from the DB
         $settings = $this->config->config;
 
